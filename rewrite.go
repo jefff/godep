@@ -102,6 +102,12 @@ func rewriteGoFile(name, qual string, paths []string) error {
 	if err = w.Close(); err != nil {
 		return err
 	}
+	
+	// Windows doesn't allow a rename over an existing file.
+	err = os.Remove(name)
+	if err != nil {
+		return err
+	}
 
 	return os.Rename(wpath, name)
 }
